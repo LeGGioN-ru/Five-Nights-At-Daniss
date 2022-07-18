@@ -1,21 +1,22 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Room))]
 [RequireComponent(typeof(Button))]
-public class RoomRenderer : MonoBehaviour, ISelectHandler, IDeselectHandler
+[RequireComponent(typeof(ButtonSelector))]
+public class RoomRenderer : MonoBehaviour
 {
     [SerializeField] private Image _roomImage;
 
     private Room _room;
     private Button _button;
-    private bool _isSelected;
+    private ButtonSelector _buttonSelector;
 
     private void Awake()
     {
         _room = GetComponent<Room>();
         _button = GetComponent<Button>();
+        _buttonSelector = GetComponent<ButtonSelector>();
     }
 
     private void OnEnable()
@@ -32,7 +33,7 @@ public class RoomRenderer : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     private void UpdateImage()
     {
-        if (_isSelected)
+        if (_buttonSelector.IsSelected)
         {
             SetImage();
         }
@@ -41,15 +42,5 @@ public class RoomRenderer : MonoBehaviour, ISelectHandler, IDeselectHandler
     private void SetImage()
     {
         _roomImage.sprite = _room.GetCurrentPhoto();
-    }
-
-    public void OnSelect(BaseEventData eventData)
-    {
-        _isSelected = true;
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        _isSelected = false;
     }
 }

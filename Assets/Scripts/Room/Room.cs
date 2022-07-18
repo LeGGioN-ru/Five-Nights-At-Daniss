@@ -27,6 +27,12 @@ public abstract class Room : MonoBehaviour
         DanisMoved?.Invoke();
     }
 
+    public void RemoveDanis()
+    {
+        _isDanisHere = false;
+        DanisMoved?.Invoke();
+    }
+
     public void MoveDanis(Room room)
     {
         _isDanisHere = false;

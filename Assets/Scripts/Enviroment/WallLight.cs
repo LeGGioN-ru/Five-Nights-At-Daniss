@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Light))]
 public class WallLight : MonoBehaviour
 {
     [SerializeField] private WallButton _button;
+    [SerializeField] private bool _isLeftLight;
+
+    public event UnityAction<bool> Enabled;
+    public event UnityAction<bool> Disabled;
 
     private Light _light;
     private bool _isOn = true;
@@ -29,10 +34,12 @@ public class WallLight : MonoBehaviour
 
         if (_isOn)
         {
-            _light.enabled=false;
+            _light.enabled = false;
+            Disabled?.Invoke(_isLeftLight);
             return;
         }
 
+        Enabled?.Invoke(_isLeftLight);
         _light.enabled = true;
     }
 }
