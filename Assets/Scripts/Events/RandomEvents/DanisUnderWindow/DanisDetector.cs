@@ -2,13 +2,21 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class DanisDetector : MonoBehaviour
 {
     [SerializeField] private float _escapeTime;
+    [SerializeField] private float _dieTime;
     [SerializeField] private float _distanceDetect;
 
+    private AudioSource _sound;
     private Transform _endPoint;
     private bool _isHidden = true;
+
+    private void Start()
+    {
+        _sound = GetComponent<AudioSource>();
+    }
 
     public void Init(Transform endPoint)
     {
@@ -21,9 +29,10 @@ public class DanisDetector : MonoBehaviour
         {
             Vector3 point = Camera.main.ViewportToWorldPoint(transform.position);
 
-            if (point.x >= -_distanceDetect && point.x < _distanceDetect)
+            if (point.x >= -_distanceDetect && point.x < _distanceDetect && point.z < 0)
             {
                 _isHidden = false;
+                _sound.Play();
                 StartCoroutine(Die());
             }
         }
@@ -35,7 +44,7 @@ public class DanisDetector : MonoBehaviour
 
         transform.DOMove(_endPoint.position, _escapeTime);
 
-        while (passedTime < _escapeTime)
+        while (passedTime < _dieTime)
         {
             passedTime += Time.deltaTime;
             yield return null;

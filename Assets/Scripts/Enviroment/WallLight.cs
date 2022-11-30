@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,10 +7,14 @@ public class WallLight : MonoBehaviour
 {
     [SerializeField] private WallButton _button;
     [SerializeField] private bool _isLeftLight;
+    [SerializeField] private float _tickDelay;
+    [SerializeField] private Battery _battery;
 
     public event UnityAction<bool> Enabled;
     public event UnityAction<bool> Disabled;
+    public event UnityAction<bool> Ticked;
 
+    private Coroutine _tick;
     private Light _light;
     private bool _isOn = true;
 
@@ -21,11 +26,13 @@ public class WallLight : MonoBehaviour
     private void OnEnable()
     {
         _button.Press += Switch;
+        _battery.StockEnded += Disable;
     }
 
     private void OnDisable()
     {
         _button.Press -= Switch;
+        _battery.StockEnded -= Disable;
     }
 
     private void Switch()
@@ -34,12 +41,38 @@ public class WallLight : MonoBehaviour
 
         if (_isOn)
         {
-            _light.enabled = false;
-            Disabled?.Invoke(_isLeftLight);
+            Disable();
             return;
         }
 
+        Enable();
+    }
+
+    private void Enable()
+    {
+        _tick = StartCoroutine(Tick());
         Enabled?.Invoke(_isLeftLight);
         _light.enabled = true;
+    }
+
+
+    private void Disable()
+    {
+        if (_tick != null)
+        {
+            StopCoroutine(_tick);
+        }
+
+        Disabled?.Invoke(_isLeftLight);
+        _light.enabled = false;
+    }
+
+    private IEnumerator Tick()
+    {
+        while (true)
+        {
+            Ticked?.Invoke(_isLeftLight);
+            yield return new WaitForSeconds(_tickDelay);
+        }
     }
 }

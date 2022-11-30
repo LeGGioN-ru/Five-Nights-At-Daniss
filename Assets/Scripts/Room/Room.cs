@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,13 +9,20 @@ public abstract class Room : MonoBehaviour
     [SerializeField] protected Sprite _danisPhoto;
     [SerializeField] protected Room[] _linkeds;
 
+    public Sprite NoDanisPhoto => _noDanisPhoto;
+    public Sprite DanisPhoto => _danisPhoto;
+
     public UnityAction DanisMoved;
 
-    protected bool _isDanisHere;
+    private List<bool> _danisesStatus = new List<bool>();
+
+    protected bool IsDanisHere => _danisesStatus.FirstOrDefault(x => x == true);
+
+    public int DanisCount => _danisesStatus.Count;
 
     public virtual Sprite GetCurrentPhoto()
     {
-        if (_isDanisHere)
+        if (IsDanisHere)
         {
             return _danisPhoto;
         }
@@ -23,32 +32,32 @@ public abstract class Room : MonoBehaviour
 
     public void AddDanis()
     {
-        _isDanisHere = true;
+        _danisesStatus.Add(true);
         DanisMoved?.Invoke();
     }
 
-    public void RemoveDanis()
+    public void MoveDanis(Room nextRoom)
     {
-        _isDanisHere = false;
-        DanisMoved?.Invoke();
+        RemoveDanis();
+        nextRoom.AddDanis();
     }
 
-    public void MoveDanis(Room room)
+    private void RemoveDanis()
     {
-        _isDanisHere = false;
-        room.AddDanis();
+        _danisesStatus.Remove(true);
         DanisMoved?.Invoke();
     }
 
-    public bool TryGetNextRoom(out Room room)
+    public bool TryGetNextRoom(out Room nextRoom)
     {
         if (_linkeds.Length == 0)
         {
-            room = null;
+            nextRoom = null;
+            RemoveDanis();
             return false;
         }
 
-        room = _linkeds[Random.Range(0, _linkeds.Length)];
+        nextRoom = _linkeds[Random.Range(0, _linkeds.Length)];
 
         return true;
     }

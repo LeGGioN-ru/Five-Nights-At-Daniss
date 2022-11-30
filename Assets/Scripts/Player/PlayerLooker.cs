@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerLooker : MonoBehaviour
@@ -16,6 +17,17 @@ public class PlayerLooker : MonoBehaviour
         _verticalPitch = Mathf.Clamp(_verticalPitch, _minVerticalPitch, _maxVerticalPitch);
 
         transform.rotation = Quaternion.Euler(_verticalPitch, _horizontalPitch, 0);
+    }
+
+    public void SubscribeOnDanis(Danis danis)
+    {
+        danis.Attacked += OnDanisAttack;
+    }
+
+    private void OnDanisAttack(Danis danis)
+    {
+        enabled = false;
+        danis.Attacked -= OnDanisAttack;
     }
 
     public void ResetRotation()

@@ -10,9 +10,12 @@ public class Battery : MonoBehaviour
     [SerializeField] private float _doorStockDown;
     [SerializeField] private float _lightStockDown;
     [SerializeField] private float _stockUpdateDelay;
+    [SerializeField] private RedLamp _redLamp;
 
-    public event UnityAction BattareyEnded;
+    public event UnityAction StockEnded;
     public event UnityAction<float> Downed;
+
+    public float CurrentStock => _currentStock;
 
     private Coroutine _leftLightCoroutine;
     private Coroutine _rightLightCoroutine;
@@ -20,7 +23,7 @@ public class Battery : MonoBehaviour
     private Coroutine _rightDoorCoroutine;
     private float _currentStock;
 
-    void Start()
+    private void Start()
     {
         _currentStock = _maxStock;
     }
@@ -38,6 +41,8 @@ public class Battery : MonoBehaviour
             light.Enabled += OnEnabled;
             light.Disabled += OnDisabled;
         }
+
+        _redLamp.Ended += OnRedLampEnded;
     }
 
     private void OnDisable()
@@ -53,17 +58,26 @@ public class Battery : MonoBehaviour
             light.Enabled -= OnEnabled;
             light.Disabled -= OnDisabled;
         }
+
+        _redLamp.Ended -= OnRedLampEnded;
     }
 
     private void OnOpened(bool isLeftSide)
     {
         if (isLeftSide)
         {
-            StopCoroutine(_leftDoorCoroutine);
+            if (_leftDoorCoroutine != null)
+            {
+                StopCoroutine(_leftDoorCoroutine);
+            }
+
             return;
         }
 
-        StopCoroutine(_rightDoorCoroutine);
+        if (_rightDoorCoroutine != null)
+        {
+            StopCoroutine(_rightDoorCoroutine);
+        }
     }
 
     private void OnClosed(bool isLeftSide)
@@ -92,20 +106,34 @@ public class Battery : MonoBehaviour
     {
         if (isLeftSide)
         {
-            StopCoroutine(_leftLightCoroutine);
+            if (_leftLightCoroutine != null)
+            {
+                StopCoroutine(_leftLightCoroutine);
+            }
+
             return;
         }
 
-        StopCoroutine(_rightLightCoroutine);
+        if (_rightLightCoroutine != null)
+        {
+            StopCoroutine(_rightLightCoroutine);
+        }
     }
 
     private IEnumerator RemoveStock(float stockDown)
     {
-        while (_currentStock > 0)
+        while (_currentStock >= 0)
         {
             _currentStock -= stockDown;
             Downed?.Invoke(_currentStock);
             yield return new WaitForSeconds(_stockUpdateDelay);
         }
+
+        StockEnded?.Invoke();
+    }
+
+    private void OnRedLampEnded()
+    {
+        Downed?.Invoke(_currentStock);
     }
 }

@@ -6,12 +6,28 @@ public class DanisCameraMover : MonoBehaviour
 {
     [SerializeField] private Room _startRoom;
     [SerializeField] private float _moveDelay;
+    [SerializeField] private GameEnder _gameEnder;
 
-    public event UnityAction MoveEnd;
+    public event UnityAction<DanisCameraMover> MoveEnd;
 
     private Room _currentRoom;
 
+    private void OnEnable()
+    {
+        _gameEnder.Ended += OnGameEnd;
+    }
+
+    private void OnDisable()
+    {
+        _gameEnder.Ended -= OnGameEnd;
+    }
+
     private void Start()
+    {
+        ResetPosition();
+    }
+
+    public void ResetPosition()
     {
         _currentRoom = _startRoom;
         _startRoom.AddDanis();
@@ -20,9 +36,7 @@ public class DanisCameraMover : MonoBehaviour
 
     public void OnRunAway(Danis danis)
     {
-        _currentRoom = _startRoom;
-        _currentRoom.AddDanis();
-        StartMove();
+        ResetPosition();
 
         danis.RanedAway -= OnRunAway;
     }
@@ -56,8 +70,11 @@ public class DanisCameraMover : MonoBehaviour
             return;
         }
 
-        _currentRoom.RemoveDanis();
+        MoveEnd?.Invoke(this);
+    }
 
-        MoveEnd?.Invoke();
+    private void OnGameEnd()
+    {
+        enabled = false;
     }
 }

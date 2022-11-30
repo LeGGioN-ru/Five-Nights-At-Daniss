@@ -4,5 +4,44 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 1fd3c7a8818b7e14da3b25136aeb58d6
+  - enabled: 1
+    path: Assets/Scenes/TestScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Plugins/TypedScenes/Samples/SampleScene.unity
+    guid: a09ce52e096d9204c954e6a00de8a4c2
+  - enabled: 1
+    path: Assets/Scenes/Night_1.unity
+    guid: 3bbc797a78e53a940a55f238dfe22cb6
+  - enabled: 1
+    path: Assets/Scenes/Night_2.unity
+    guid: 1c0b1eb9cd18a3347a5e5813e4a852e3
+  - enabled: 1
+    path: Assets/Scenes/Night_3.unity
+    guid: 8c9167f6ec36d54439cb9114fc60096d
+  - enabled: 1
+    path: Assets/Scenes/Night_4.unity
+    guid: 5f31136581d757c40b73b00392c34684
+  - enabled: 1
+    path: Assets/Scenes/Night_5.unity
+    guid: e258b0a7648f4b643b13ab5fdd4ce8b0
+  - enabled: 1
+    path: Assets/Scenes/EndRoom.unity
+    guid: 5bb6bd75a17fc1745a71616715c75d00
+  - enabled: 1
+    path: Assets/Scenes/OutDoors.unity
+    guid: 9f9441878ee9026479ef14a36763601e
+  - enabled: 0
+    path: Assets/Plugins/V1/Scene_V1.unity
+    guid: 9f69eff78eb17a34e8b38b2422e939a3
+  - enabled: 1
+    path: Assets/Scenes/EndGameDialog.unity
+    guid: 7eed0ceb3e46b784793b4fe972d6d05c
+  - enabled: 1
+    path: Assets/Plugins/Azerilo/Free Rug Pack/Scene/Demo_Scene.unity
+    guid: 1cada449ba5a5a745907720c5ec3da20
   m_configObjects: {}
