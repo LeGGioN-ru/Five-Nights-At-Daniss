@@ -8,4 +8,4 @@ Five Nights at Danis - шуточная пародия на игру FNAF с м�
 
 #### Скриншоты
 ![image](https://github.com/LeGGioN-ru/Five-Nights-At-Daniss/assets/78662261/788810da-5882-4990-9ada-c8506e73bb30)
-![image](https://github.com/LeGGioN-ru/Five-Nights-At-Daniss/assets/78662261/0c6f8d46-f362-41ab-952d-6837722d8ab5)
+![unnamed (4)](https://github.com/LeGGioN-ru/Five-Nights-At-Daniss/assets/78662261/6380dce1-449d-4655-adb3-e2137d0f5578)
