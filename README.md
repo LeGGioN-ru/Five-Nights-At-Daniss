@@ -1,4 +1,4 @@
-![image](https://github.com/LeGGioN-ru/Five-Nights-At-Daniss/assets/78662261/21731358-5e8f-4cd9-b0be-f9738241dd8a)# Five Nights at Danis
+# Five Nights at Danis
 Jul 1, 2022 - Aug 15, 2022.
 
 ------------
